@@ -75,13 +75,19 @@ class _CameraAppState extends State<CameraApp> {
         final color = Color(pixelColor as int);
         print('Captured Pixel Color: $color');
       }
+      String? savedHexCode;
 
+      void handleColorSelected(String hexCode) {
+        setState(() {
+          savedHexCode = hexCode;
+        });
+      }
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ImagePreview(file, key: null,),
+          builder: (context) => ImagePreview(file, key: null, onColorSelected: handleColorSelected),
         ),
-      );
+      );;
     } on CameraException catch (e) {
       debugPrint("Error Occurred: $e");
       return;
@@ -100,7 +106,7 @@ class _CameraAppState extends State<CameraApp> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CameraScreen(file),
+          builder: (context) => CameraScreen(file, onColorSelected: (String) {  },),
         ),
       );
     } on CameraException catch (e) {
@@ -152,7 +158,7 @@ class _CameraAppState extends State<CameraApp> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ImagePreview(file, key: null,)));
+                    builder: (context) => ImagePreview(file, key: null, onColorSelected: (String ) {  },)));
           } on CameraException catch (e) {
             debugPrint("Error Occured : $e");
             return null;

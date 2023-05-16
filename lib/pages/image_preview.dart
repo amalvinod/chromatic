@@ -7,8 +7,10 @@ import 'package:image/image.dart' as img;
 
 class ImagePreview extends StatefulWidget {
   final XFile file;
+  final Function(String) onColorSelected;
 
-  const ImagePreview(this.file, {Key? key}) : super(key: key);
+  const ImagePreview(this.file, {Key? key, required this.onColorSelected}) : super(key: key);
+
 
   @override
   ImagePreviewState createState() => ImagePreviewState();
@@ -19,6 +21,8 @@ class ImagePreviewState extends State<ImagePreview> {
   String? selectedHexColor;
   Offset? cursorPosition;
   Color? _selectedColor;
+  bool _colorSelected = false;
+
 
   void _handleDragStart(DragStartDetails details) {
     setState(() {
@@ -47,9 +51,19 @@ class ImagePreviewState extends State<ImagePreview> {
         print("Cursor Position Update: ");
         print(cursorPosition);
       }
+      if (_selectedColor != null) {
+        String hexCode = _getHexCode(_selectedColor!);
+        widget.onColorSelected(hexCode);
+      }
     });
   }
-
+  void _saveColor() {
+    if (_selectedColor != null) {
+      final String hexColor = _getHexCode(_selectedColor);
+      widget.onColorSelected(hexColor);
+      _colorSelected = true;
+    }
+  }
   Color? _getColorAtPixel(Offset? pixel) {
     if (pixel == null) return null;
 
@@ -114,21 +128,21 @@ class ImagePreviewState extends State<ImagePreview> {
                   ),
                 ),
                 if (cursorPosition != null)
-                Positioned(
-                left: cursorPosition!.dx, // Adjust the position as needed
-                top: cursorPosition!.dy, // Adjust the position as needed
-                child: Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                color: Colors.red,
-                width: 3.0,
-                ),
+                  Positioned(
+                    left: cursorPosition!.dx, // Adjust the position as needed
+                    top: cursorPosition!.dy, // Adjust the position as needed
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 3.0,
+                        ),
+                      ),
                     ),
                   ),
-                ),
                 Positioned(
                   left: 0,
                   right: 0,
