@@ -13,7 +13,8 @@ class CameraScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Camera Screen'),
+        title: Text('Camera Screen'),
+        centerTitle: false,
       ),
       body: Center(
         child: Column(
@@ -29,7 +30,11 @@ class CameraScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text('Preview Image'),
+              child: Text('Preview Image'),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                textStyle: TextStyle(fontSize: 18),
+              ),
             ),
           ],
         ),

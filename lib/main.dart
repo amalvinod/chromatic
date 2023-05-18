@@ -358,59 +358,73 @@ class _CameraAppState extends State<CameraApp> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        child: RawMaterialButton(
-                          onPressed: () async {
-                            if (!_controller.value.isInitialized) {
-                              stopImageProcessing();
-                              return null;
-                            }
-                            if (_controller.value.isTakingPicture) {
-                              stopImageProcessing();
-                              return null;
-                            }
+                    Expanded(
+                    flex: 1,
+                    child: Container(
+                      child: RawMaterialButton(
+                        onPressed: () async {
+                          if (!_controller.value.isInitialized) {
+                            stopImageProcessing();
+                            return null;
+                          }
+                          if (_controller.value.isTakingPicture) {
+                            stopImageProcessing();
+                            return null;
+                          }
 
-                            try {
-                              _controller.setFlashMode(FlashMode.off);
-                              stopImageProcessing();
-                              XFile file = await _controller.takePicture();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ImagePreview(
-                                            file,
-                                            key: null,
-                                            onColorSelected: (String) {},
-                                          )));
-                            } on CameraException catch (e) {
-                              debugPrint("Error Occured : $e");
-                              return null;
-                            }
-                          },
-                          fillColor: Colors.white,
-                          child: const Icon(Icons.camera),
-                          shape: const CircleBorder(),
-                        ),
+                          try {
+                            _controller.setFlashMode(FlashMode.off);
+                            stopImageProcessing();
+                            XFile file = await _controller.takePicture();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ImagePreview(
+                                  file,
+                                  key: null,
+                                  onColorSelected: (String) {},
+                                ),
+                              ),
+                            );
+                          } on CameraException catch (e) {
+                            debugPrint("Error Occurred: $e");
+                            return null;
+                          }
+                        },
+                        fillColor: Colors.white,
+                        child: const Icon(Icons.camera),
+                        shape: const CircleBorder(),
                       ),
-                      Container(
-                        child: RawMaterialButton(
-                          onPressed: openCamera,
-                          fillColor: Colors.white,
-                          child: const Icon(Icons.image),
-                          shape: const CircleBorder(),
-                        ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      child: RawMaterialButton(
+                        onPressed: openCamera,
+                        fillColor: Colors.white,
+                        child: const Icon(Icons.image),
+                        shape: const CircleBorder(),
                       ),
-                      Container(
-                        child: RawMaterialButton(
-                          onPressed: detectColorByModel,
-                          fillColor: Colors.white,
-                          child: const Text('Start/Stop Live Detection'),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
-                          padding: EdgeInsets.all(4),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      child: RawMaterialButton(
+                        onPressed: detectColorByModel,
+                        fillColor: Colors.white,
+                        child: const Text('Start/Stop Live Detection'),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
+                        padding: const EdgeInsets.all(12),
+                      ),
+                    ),
                       ),
                     ],
                   ),

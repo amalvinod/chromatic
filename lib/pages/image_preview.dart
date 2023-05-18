@@ -71,7 +71,7 @@ class ImagePreviewState extends State<ImagePreview> {
     if (pixel == null) return null;
 
     final img.Image image =
-        img.decodeImage(File(widget.file.path).readAsBytesSync())!;
+    img.decodeImage(File(widget.file.path).readAsBytesSync())!;
     final int x = pixel.dx.toInt();
     final int y = pixel.dy.toInt();
 
@@ -82,7 +82,7 @@ class ImagePreviewState extends State<ImagePreview> {
       final int green = (pixelValue.g as int).clamp(0, 255);
       final int blue = (pixelValue.b as int).clamp(0, 255);
       final int hexValue =
-          ((alpha << 24) | (red << 16) | (green << 8) | blue) & 0xFFFFFFFF;
+      ((alpha << 24) | (red << 16) | (green << 8) | blue) & 0xFFFFFFFF;
       // return '#${hexValue.toRadixString(16).padLeft(8, '0')}';
       return Color.fromARGB(alpha, red, green, blue);
     }
@@ -109,7 +109,12 @@ class ImagePreviewState extends State<ImagePreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Static View'),
+        backgroundColor: Colors.blue,
+        elevation: 0,
+        title: const Text(
+          'Static View',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
