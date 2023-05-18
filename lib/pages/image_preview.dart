@@ -107,88 +107,122 @@ class ImagePreviewState extends State<ImagePreview> {
 
   @override
   Widget build(BuildContext context) {
+    final double appBarHeight = AppBar().preferredSize.height;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.black,
         elevation: 0,
         title: const Text(
           'Static View',
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          final imageSize = Size(
-            constraints.maxWidth,
-            constraints.maxHeight,
-          );
-          return GestureDetector(
-            onPanStart: _handleDragStart,
-            onPanUpdate: _handleDragUpdate,
-            onPanEnd: _handleDragEnd,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Center(
-                  child: Image.file(
-                    File(widget.file.path),
-                    fit: BoxFit.contain,
+      body: Container(
+        margin: EdgeInsets.only(top: appBarHeight),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final imageSize = Size(
+              constraints.maxWidth,
+              constraints.maxHeight - appBarHeight, // Adjust for app bar height
+            );
+            return GestureDetector(
+              onPanStart: _handleDragStart,
+              onPanUpdate: _handleDragUpdate,
+              onPanEnd: _handleDragEnd,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Center(
+                    child: Image.file(
+                      File(widget.file.path),
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                ),
-                if (cursorPosition != null)
-                  Positioned(
-                    left: cursorPosition!.dx, // Adjust the position as needed
-                    top: cursorPosition!.dy, // Adjust the position as needed
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.red,
-                          width: 3.0,
+                  if (cursorPosition != null)
+                    Positioned(
+                      left: cursorPosition!.dx, // Adjust the position as needed
+                      top: cursorPosition!.dy, // Adjust the position as needed
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.red,
+                            width: 3.0,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    height: 80,
-                    color: Colors.black,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          color: _selectedColor,
-                        ),
-                        const SizedBox(width: 8),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Hex Code: ${_getHexCode(_selectedColor)}',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              'Shade: ${_getShade(_selectedColor)}',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ],
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      height: 80,
+                      color: Colors.black,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            color: _selectedColor,
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Color:',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        SizedBox(width: 4),
+                                        Container(
+                                          width: 20,
+                                          height: 20,
+                                          color: _selectedColor,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'Hex Code: ${_getHexCode(
+                                          _selectedColor)}',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'Shade: ${_getShade(_selectedColor)}',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

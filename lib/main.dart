@@ -320,14 +320,23 @@ class _CameraAppState extends State<CameraApp> {
               },
             ),
           ),
-          if (_detectedColor != null) // Display the detected color box
+          if (_detectedColor != null)
             Positioned(
-              // left: _cursorPosition.dx - 20,
-              // right: _cursorPosition.dy - 20,
-              bottom: 120, // Adjust the position of the box as needed
+              bottom: 120,
               child: Container(
-                padding: EdgeInsets.all(8),
-                color: Colors.white,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.yellow.shade100,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -339,15 +348,19 @@ class _CameraAppState extends State<CameraApp> {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
                       'Detected Color: $detectedColorByModel',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
+
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -393,7 +406,7 @@ class _CameraAppState extends State<CameraApp> {
                             return null;
                           }
                         },
-                        fillColor: Colors.white,
+                        fillColor: Colors.yellow.shade100,
                         child: const Icon(Icons.camera),
                         shape: const CircleBorder(),
                       ),
@@ -405,7 +418,7 @@ class _CameraAppState extends State<CameraApp> {
                     child: Container(
                       child: RawMaterialButton(
                         onPressed: openCamera,
-                        fillColor: Colors.white,
+                        fillColor: Colors.yellow.shade100,
                         child: const Icon(Icons.image),
                         shape: const CircleBorder(),
                       ),
@@ -417,10 +430,10 @@ class _CameraAppState extends State<CameraApp> {
                     child: Container(
                       child: RawMaterialButton(
                         onPressed: detectColorByModel,
-                        fillColor: Colors.white,
+                        fillColor: Colors.yellow.shade100,
                         child: const Text('Start/Stop Live Detection'),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(9.0),
                         ),
                         padding: const EdgeInsets.all(12),
                       ),
