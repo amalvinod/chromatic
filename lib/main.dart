@@ -12,6 +12,7 @@ import 'package:tflite_flutter/tflite_flutter.dart'; //new package added
 import 'dart:convert';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_tts/flutter_tts.dart';
 
 late List<CameraDescription> cameras;
 
@@ -47,6 +48,13 @@ class _CameraAppState extends State<CameraApp> {
   String? detectedColorByModel;
   bool _isCameraInitialized = false;
   Offset _cursorPosition = Offset(0, 0); // Initial cursor position
+  FlutterTts flutterTts = FlutterTts();
+
+  void announceColor(String? color) async {
+    print("COLOR ANNOUNCING: ");
+    print(color);
+    await flutterTts.speak('The last detected color is $color');
+  }
 
   @override
   void initState() {
@@ -177,8 +185,8 @@ class _CameraAppState extends State<CameraApp> {
   }
 
   List<List<double>> generateList() {
-    final rows = 1;
-    final columns = 144;
+    const rows = 1;
+    const columns = 144;
     return List.generate(rows, (_) => List.filled(columns, 0.0));
   }
 
@@ -204,7 +212,7 @@ class _CameraAppState extends State<CameraApp> {
   Future<List<String>> readCSV() async {
     final String csvData =
         await rootBundle.loadString('assets/color-labels.csv');
-    List<String> csvRows = LineSplitter().convert(csvData);
+    List<String> csvRows = const LineSplitter().convert(csvData);
     return csvRows;
   }
 
@@ -246,6 +254,7 @@ class _CameraAppState extends State<CameraApp> {
   void detectColorByModel() async {
     print("BUTTON PRESSED");
     if (_controller.value.isStreamingImages) {
+      announceColor(detectedColorByModel);
       stopImageProcessing();
     } else {
       _startFrameAnalysis();
