@@ -14,7 +14,6 @@ class ImagePreview extends StatefulWidget {
   State<ImagePreview> createState() => _ImagePreviewState();
 }
 
-
 class _ImagePreviewState extends State<ImagePreview> {
   Offset? selectedPixel;
   Color? selectedColor;
@@ -30,7 +29,8 @@ class _ImagePreviewState extends State<ImagePreview> {
   Color? _getColorAtPixel(Offset? pixel) {
     if (pixel == null) return null;
 
-    final img.Image image = img.decodeImage(File(widget.file.path).readAsBytesSync())!;
+    final img.Image image =
+        img.decodeImage(File(widget.file.path).readAsBytesSync())!;
     final int x = pixel.dx.toInt();
     final int y = pixel.dy.toInt();
 
@@ -45,8 +45,6 @@ class _ImagePreviewState extends State<ImagePreview> {
 
     return null;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,4 +96,3 @@ class _ImagePreviewState extends State<ImagePreview> {
     );
   }
 }
-

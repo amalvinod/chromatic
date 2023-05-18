@@ -9,8 +9,8 @@ class ImagePreview extends StatefulWidget {
   final XFile file;
   final Function(String) onColorSelected;
 
-  const ImagePreview(this.file, {Key? key, required this.onColorSelected}) : super(key: key);
-
+  const ImagePreview(this.file, {Key? key, required this.onColorSelected})
+      : super(key: key);
 
   @override
   ImagePreviewState createState() => ImagePreviewState();
@@ -23,12 +23,12 @@ class ImagePreviewState extends State<ImagePreview> {
   Color? _selectedColor;
   bool _colorSelected = false;
 
-
   void _handleDragStart(DragStartDetails details) {
     setState(() {
       cursorPosition = details.localPosition;
     });
   }
+
   void _handleDragEnd(DragEndDetails details) {
     setState(() {
       _selectedColor = _getColorAtPixel(cursorPosition);
@@ -40,6 +40,7 @@ class ImagePreviewState extends State<ImagePreview> {
       }
     });
   }
+
   void _handleDragUpdate(DragUpdateDetails details) {
     setState(() {
       // RenderBox box = context.findRenderObject() as RenderBox;
@@ -57,6 +58,7 @@ class ImagePreviewState extends State<ImagePreview> {
       }
     });
   }
+
   void _saveColor() {
     if (_selectedColor != null) {
       final String hexColor = _getHexCode(_selectedColor);
@@ -64,10 +66,12 @@ class ImagePreviewState extends State<ImagePreview> {
       _colorSelected = true;
     }
   }
+
   Color? _getColorAtPixel(Offset? pixel) {
     if (pixel == null) return null;
 
-    final img.Image image = img.decodeImage(File(widget.file.path).readAsBytesSync())!;
+    final img.Image image =
+        img.decodeImage(File(widget.file.path).readAsBytesSync())!;
     final int x = pixel.dx.toInt();
     final int y = pixel.dy.toInt();
 
@@ -77,15 +81,14 @@ class ImagePreviewState extends State<ImagePreview> {
       final int red = (pixelValue.r as int).clamp(0, 255);
       final int green = (pixelValue.g as int).clamp(0, 255);
       final int blue = (pixelValue.b as int).clamp(0, 255);
-      final int hexValue = ((alpha << 24) | (red << 16) | (green << 8) | blue) & 0xFFFFFFFF;
+      final int hexValue =
+          ((alpha << 24) | (red << 16) | (green << 8) | blue) & 0xFFFFFFFF;
       // return '#${hexValue.toRadixString(16).padLeft(8, '0')}';
       return Color.fromARGB(alpha, red, green, blue);
-
     }
 
     return null;
   }
-
 
   String _getHexCode(Color? color) {
     if (color == null) return '';
@@ -184,6 +187,4 @@ class ImagePreviewState extends State<ImagePreview> {
       ),
     );
   }
-
 }
-
